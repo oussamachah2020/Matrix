@@ -1,0 +1,22 @@
+@import "../variables/variables.scss";
+@import "../base/typography.scss";
+@import "../components/inputs.scss";
+
+body {
+  font-size: 16px;
+  font-family: $PoppinsFont;
+}
+
+.login {
+  background: $background;
+  width: $maxWidth;
+  height: $maxHeight;
+  color: $defaultColor;
+}
+
+#title {
+  letter-spacing: 2px;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}

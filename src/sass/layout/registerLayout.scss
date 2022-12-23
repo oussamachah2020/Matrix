@@ -1,0 +1,22 @@
+.regitser {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    gap: 4rem;
+    position: relative;
+}
+
+a {
+    color: rgb(99, 155, 232);
+    text-decoration: none;
+    font-weight: 600;
+}
