@@ -1,0 +1,39 @@
+@import "../variables/variables.scss";
+@import "../base/typography.scss";
+@import "../layout/profileLayout.scss";
+
+.profile {
+  overflow-x: hidden;
+  background: $background;
+  width: $maxWidth;
+  height: $maxHeight;
+  color: $defaultColor;
+  position: absolute;
+  gap: 1rem;
+}
+
+#userEmail {
+  font-weight: 400;
+  opacity: .4;
+  font-size: .8rem;
+}
+
+.counter-container {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  gap: 19rem;
+}
+
+.navbar {
+  z-index: 1;
+}
+
+.profile {
+  z-index: -1;
+}

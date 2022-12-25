@@ -1,15 +1,63 @@
-import React from "react";
+import { useState } from "react";
 import "../../sass/themes/login.scss";
 import "../../sass/layout/loginLayout.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../../../server/firebaseConnection";
+import { toast } from "react-toastify";
 
 function Login() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
+
+  const signIn = (e) => {
+    e.preventDefault();
+    const { email, password } = formData;
+
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        auth.onAuthStateChanged((user) => {
+          let username = user?.displayName;
+          navigate(`/Home?username=${username}`)
+        })
+      })
+      .catch((err) => {
+        toast(err);
+      });
+  };
+
   return (
     <div className="login">
       <h2 id="title">Login</h2>
-      <form method="post">
-        <input type="email" placeholder="E-mail" name="email" />
-        <input type="password" placeholder="Password" name="password" />
+      <form method="post" onSubmit={signIn}>
+        <input
+          type="email"
+          placeholder="E-mail"
+          name="email"
+          value={formData.email}
+          onChange={(e) =>
+            setFormData((prevData) => ({
+              ...prevData,
+              email: e.target.value,
+            }))
+          }
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          value={formData.password}
+          onChange={(e) =>
+            setFormData((prevData) => ({
+              ...prevData,
+              password: e.target.value,
+            }))
+          }
+        />
         <input type="submit" value="validate" />
       </form>
       <p>

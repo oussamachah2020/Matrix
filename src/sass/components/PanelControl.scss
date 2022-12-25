@@ -1,0 +1,25 @@
+@import "../variables/variables.scss";
+
+.Panel {
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-container {
+  background-color: $defaultColor;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 50px;
+  margin: 1rem;
+  width: 378px;
+  height: 47px;
+  position: fixed;
+  top: 90%;
+}
+
+.panel-container img {
+    position: relative;
+    top: 2px;
+}

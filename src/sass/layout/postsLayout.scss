@@ -1,0 +1,19 @@
+.posts-container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(1fr, 100%);
+  margin: 2rem;
+  gap: 2rem;
+}
+
+.post {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+
+  border: 1px solid #ffff;
+  border-radius: 10px;
+  width: 95vw;
+}

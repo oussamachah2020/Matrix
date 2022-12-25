@@ -32,7 +32,7 @@ function Register() {
           toast(err);
         });
       toast("Account created successfully");
-      navigate("/Home");
+      navigate(`/Home?username=${username}`);
     } else {
       toast("passwords not matching");
     }
@@ -42,7 +42,7 @@ function Register() {
     <div className="regitser">
       <ToastContainer />
       <h2 id="title">Register</h2>
-      <form method="post">
+      <form method="post" onSubmit={signUp}>
         <input
           type="text"
           placeholder="username"
