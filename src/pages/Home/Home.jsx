@@ -26,7 +26,7 @@ function Home() {
     <>
       {openPostCard ? (
         <div className="uploadCard">
-          <UploadImage setOpenPostCard={setOpenPostCard} />
+          <UploadImage setOpenPostCard={setOpenPostCard} username={username} />
         </div>
       ) : null}
 
