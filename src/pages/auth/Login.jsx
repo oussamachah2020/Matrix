@@ -22,8 +22,8 @@ function Login() {
       .then(() => {
         auth.onAuthStateChanged((user) => {
           let username = user?.displayName;
-          navigate(`/Home?username=${username}`)
-        })
+          navigate(`/Home?username=${username}`);
+        });
       })
       .catch((err) => {
         toast(err);

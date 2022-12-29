@@ -44,7 +44,6 @@ function profile() {
           />
         </div>
         <Avatar
-          src={Sword}
           style={{
             backgroundColor: "rgb(14, 52, 108)",
             verticalAlign: "middle",

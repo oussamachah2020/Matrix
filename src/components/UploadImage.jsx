@@ -3,11 +3,11 @@ import { Button, message, Upload } from "antd";
 import { Input } from "antd";
 const { TextArea } = Input;
 import "../sass/themes/upload.scss";
-import { db, storage } from "../../server/firebaseConnection";
+import { db, storage, auth } from "../../server/firebaseConnection";
+import firebase from "firebase/compat/app";
 
 const props = {
   name: "file",
-  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
   headers: {
     authorization: "authorization-text",
   },
@@ -31,53 +31,55 @@ const props = {
   },
 };
 
-const UploadImage = ({ setOpenPostCard, username }) => {
+const UploadImage = ({ setOpenPostCard }) => {
   const [image, setImage] = useState(null);
   const [caption, setCaption] = useState("");
-
-  const storageRef = storage.ref();
+  const user = auth.currentUser;
 
   const hideUpload = () => {
     setOpenPostCard(false);
   };
 
-  const HandlePost = () => {
-    const task = storage.ref(`PostImage/${image}`).put(image);
 
-    task.on("state_changed", (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log("Upload is " + progress + "% done");
-      switch (snapshot.state) {
-        case "paused":
-          console.log("Upload is paused");
-          break;
-        case "running":
-          console.log("Upload is running");
-          break;
-      }
-    });
+  const handleUpload = () => {
+    // Use the `put` method to upload the image
+    const task = storage.ref(`PostImage/${image.name}`).put(image);
 
-    storage
-      .ref("PostImage")
-      .child(image.name)
-      .getDownloadURL()
-      .then((url) =>
-        db.collection("post").add({
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          caption: caption,
-          imageURL: url,
-          username: username,
-        })
-      );
+    // Get the download URL for the image
+    task
+      .then((snapshot) => {
+        snapshot.ref
+          .getDownloadURL()
+          .then((url) => {
+            // Add a document to the "posts" collection
+            db.collection("posts").add({
+              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+              caption: caption,
+              imageURL: url,
+              username: user?.displayName,
+            });
+
+            message.success("Posted successfully");
+          })
+          .catch((error) => {
+            console.log("Error getting download URL:", error);
+            message.error("Error getting download URL: " + error);
+          });
+      })
+      .catch((error) => {
+        console.log("Error uploading image:", error);
+        message.error("Error uploading image: " + error);
+      });
   };
 
-  function handleBeforeUpload(file) {
-    const fileName = file.name;
-    const fileRef = storageRef.child(fileName);
-    const task = fileRef.put(file);
-    task.start();
-  }
+  // const handleChange = (info) => {
+  //   const { fileList } = info;
+  //   setImage(fileList[0]);
+  // };
 
+  console.log(image);
+
+  // console.log(Image);
   return (
     <div className="upload-container">
       <p>Post Something</p>
@@ -85,19 +87,16 @@ const UploadImage = ({ setOpenPostCard, username }) => {
         rows={4}
         className="caption-container"
         placeholder="Caption"
-        value={caption}
         onChange={(e) => setCaption(e.target.value)}
+        value={caption}
       />
-
-      <Upload
-        {...props}
-        name="file"
-        beforeUpload={handleBeforeUpload}
-      >
-        <Button className="uploadBtn">Upload</Button>
-      </Upload>
+      <input
+        type="file"
+        name="image"
+        onChange={(e) => setImage(e.currentTarget.files[0])}
+      />
       <div className="uploadBtns-container">
-        <button className="postBtn" onClick={HandlePost}>
+        <button className="postBtn" onClick={handleUpload}>
           Post
         </button>
         <button className="cancelBtn" onClick={hideUpload}>

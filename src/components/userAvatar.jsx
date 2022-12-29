@@ -21,6 +21,7 @@ const userAvatar = ({ user }) => {
       size="large"
       gap={gap}
     >
+      {user?.displayName}
     </Avatar>
   );
 };

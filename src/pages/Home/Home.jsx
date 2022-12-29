@@ -35,7 +35,7 @@ function Home() {
           <Search setOpenSearchCard={setOpenSearchCard} />
         </div>
       ) : null}
-      
+
       <div className="home">
         <h2>Matrix</h2>
         <ControlPanel
@@ -43,9 +43,7 @@ function Home() {
           setOpenPostCard={setOpenPostCard}
           setOpenSearchCard={setOpenSearchCard}
         />
-        <div className="posts-container">
-          <Post />
-        </div>
+        {username ? <Post username={username} /> : navigate("/login")}
       </div>
     </>
   );
