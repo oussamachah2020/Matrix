@@ -6,10 +6,12 @@ import Wallpaper from "../../assets/view.png";
 import UploadImage from "../../components/UploadImage";
 import Search from "../../components/Search";
 import Post from "../../components/Post";
+import { auth } from "../../../server/firebaseConnection";
 
 function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const username = searchParams.get("username");
+  const user = auth.currentUser;
 
   const navigate = useNavigate();
 
@@ -43,7 +45,11 @@ function Home() {
           setOpenPostCard={setOpenPostCard}
           setOpenSearchCard={setOpenSearchCard}
         />
-        {username ? <Post username={username} /> : navigate("/login")}
+        {username ? (
+          <Post username={username} key={user.uid} />
+        ) : (
+          navigate("/login")
+        )}
       </div>
     </>
   );

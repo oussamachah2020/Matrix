@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar } from "antd";
 import Sword from "../assets/sword.jpg";
 import "../sass/themes/Profile.scss";
 import { useSearchParams } from "react-router-dom";
-import { auth } from "../../server/firebaseConnection";
+import { auth, db } from "../../server/firebaseConnection";
 import "../sass/themes/Home.scss";
 import Wallpaper from "..//assets/view.png";
 import Like from "../assets/like.svg";
@@ -28,6 +28,34 @@ function profile() {
     }
   };
 
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    // Get the posts collection
+    if (user) {
+      // Get the collection
+      const unsubscribe = db
+        .collection("posts")
+        // Create a query with a filter on the user ID field
+        .where("username", "==", user.displayName)
+        .onSnapshot((snapshot) => {
+          // Get the documents in the snapshot
+          const documents = snapshot.docs;
+
+          // Set the data state with the documents
+          setPosts(documents);
+        });
+
+      // Unsubscribe from the snapshot when the component unmounts
+      return () => unsubscribe();
+    }
+
+    // Unsubscribe from the snapshot when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  console.log("posts =>", posts);
+
   return (
     <>
       <div className="profile">
@@ -44,6 +72,7 @@ function profile() {
           />
         </div>
         <Avatar
+          src={Sword}
           style={{
             backgroundColor: "rgb(14, 52, 108)",
             verticalAlign: "middle",
@@ -63,25 +92,34 @@ function profile() {
         </div>
         <div className="user-posts">
           <p style={{ margin: "20px 0" }}>Your Posts</p>
-          <div className="post">
-            <img src={Wallpaper} alt="postImage" className="post-image" />
-            <p className="post-description">check this wallapaper</p>
-            <hr style={{ width: "90%" }} />
-            <div className="buttons-container">
-              <button>
-                <img src={Like} alt="likeButton" />
-                Like
-              </button>
-              <button>
-                <img src={Comment} alt="commentButton" />
-                Comment
-              </button>
-              <button>
-                <img src={Share} alt="shareButton" />
-                Share
-              </button>
+          {posts.map((post) => (
+            <div className="post-container">
+              <div className="post" key={post.id}>
+                <p id="user">{post.username}</p>
+                <img
+                  src={post.imageURL}
+                  alt="postImage"
+                  className="post-image"
+                />
+                <p className="post-description">{post.caption}</p>
+                <hr style={{ width: "90%" }} />
+                <div className="buttons-container">
+                  <button>
+                    <img src={Like} alt="likeButton" />
+                    Like
+                  </button>
+                  <button>
+                    <img src={Comment} alt="commentButton" />
+                    Comment
+                  </button>
+                  <button>
+                    <img src={Share} alt="shareButton" />
+                    Share
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
       <Navbar setOpen={setOpen} open={open} />

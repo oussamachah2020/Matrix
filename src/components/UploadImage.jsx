@@ -40,7 +40,6 @@ const UploadImage = ({ setOpenPostCard }) => {
     setOpenPostCard(false);
   };
 
-
   const handleUpload = () => {
     // Use the `put` method to upload the image
     const task = storage.ref(`PostImage/${image.name}`).put(image);
@@ -90,11 +89,13 @@ const UploadImage = ({ setOpenPostCard }) => {
         onChange={(e) => setCaption(e.target.value)}
         value={caption}
       />
-      <input
-        type="file"
-        name="image"
-        onChange={(e) => setImage(e.currentTarget.files[0])}
-      />
+      <div className="custom-file-input">
+        <input
+          type="file"
+          name="image"
+          onChange={(e) => setImage(e.currentTarget.files[0])}
+        />
+      </div>
       <div className="uploadBtns-container">
         <button className="postBtn" onClick={handleUpload}>
           Post

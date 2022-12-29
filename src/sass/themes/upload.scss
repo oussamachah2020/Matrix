@@ -24,20 +24,20 @@ p {
   color: #fff;
 }
 
-.uploadBtn {
-  background: #114f7c;
-  border: none;
-  color: $defaultColor;
-  font-weight: 800;
-  font-size: 1rem;
-  padding: 1.2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  float: left;
-  min-width: 85vw;
-  //   max-height: 100%;
-}
+// .uploadBtn {
+//   background: #114f7c;
+//   border: none;
+//   color: $defaultColor;
+//   font-weight: 800;
+//   font-size: 1rem;
+//   padding: 1.2rem;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   float: left;
+//   min-width: 85vw;
+//   //   max-height: 100%;
+// }
 
 .uploadBtns-container {
   display: flex;
@@ -69,4 +69,45 @@ p {
   color: $defaultColor;
   font-weight: 800;
   cursor: pointer;
+}
+
+.custom-file-input {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.custom-file-input input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  max-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: #3b9add;
+  cursor: inherit;
+  display: block;
+  cursor: pointer;
+}
+
+.custom-file-input::before {
+  content: "Upload";
+  display: inline-block;
+  background: #114f7c;
+  // border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: $defaultColor;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-right: 10px;
+  padding: 7px 0;
+  text-align: center;
+  min-width: 100%;
 }
