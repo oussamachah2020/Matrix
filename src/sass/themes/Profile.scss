@@ -6,16 +6,17 @@
   overflow-x: hidden;
   background: $background;
   width: $maxWidth;
-  height: $maxHeight;
+  // height: $maxHeight;
   color: $defaultColor;
   position: absolute;
+  padding-top: 1.5rem;
   gap: 1rem;
 }
 
 #userEmail {
   font-weight: 400;
-  opacity: .4;
-  font-size: .8rem;
+  opacity: 0.4;
+  font-size: 0.8rem;
 }
 
 .counter-container {

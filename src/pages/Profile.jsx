@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Avatar } from "antd";
 import Sword from "../assets/sword.jpg";
 import "../sass/themes/Profile.scss";
+import "../sass/layout/postsLayout.scss";
+import "../sass/themes/upload.scss";
 import { useSearchParams } from "react-router-dom";
 import { auth, db } from "../../server/firebaseConnection";
 import "../sass/themes/Home.scss";
-import Wallpaper from "..//assets/view.png";
 import Like from "../assets/like.svg";
 import Comment from "../assets/comment.svg";
 import Share from "../assets/share.svg";
@@ -28,7 +29,7 @@ function profile() {
     }
   };
 
-  const [posts, setPosts] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     // Get the posts collection
@@ -41,20 +42,20 @@ function profile() {
         .onSnapshot((snapshot) => {
           // Get the documents in the snapshot
           const documents = snapshot.docs;
-
+          const posts = [];
+          documents.forEach((doc) => {
+            // console.log(doc.data());
+            posts.push(doc.data());
+            setData(posts);
+          });
           // Set the data state with the documents
-          setPosts(documents);
         });
-
       // Unsubscribe from the snapshot when the component unmounts
       return () => unsubscribe();
     }
-
-    // Unsubscribe from the snapshot when the component unmounts
-    return () => unsubscribe();
   }, []);
 
-  console.log("posts =>", posts);
+  console.log(data);
 
   return (
     <>
@@ -92,16 +93,12 @@ function profile() {
         </div>
         <div className="user-posts">
           <p style={{ margin: "20px 0" }}>Your Posts</p>
-          {posts.map((post) => (
+          {data.map((item) => (
             <div className="post-container">
-              <div className="post" key={post.id}>
-                <p id="user">{post.username}</p>
-                <img
-                  src={post.imageURL}
-                  alt="postImage"
-                  className="post-image"
-                />
-                <p className="post-description">{post.caption}</p>
+              <div className="post">
+                <p id="user">{item.username}</p>
+                <img src={item.imageURL} alt="postImage" className="post-image" />
+                <p className="post-description">{item.caption}</p>
                 <hr style={{ width: "90%" }} />
                 <div className="buttons-container">
                   <button>
@@ -118,6 +115,7 @@ function profile() {
                   </button>
                 </div>
               </div>
+              <br />
             </div>
           ))}
         </div>
