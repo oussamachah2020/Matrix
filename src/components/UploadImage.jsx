@@ -6,31 +6,6 @@ import "../sass/themes/upload.scss";
 import { db, storage, auth } from "../../server/firebaseConnection";
 import firebase from "firebase/compat/app";
 
-const props = {
-  name: "file",
-  headers: {
-    authorization: "authorization-text",
-  },
-  onChange(info) {
-    if (info.file.status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  progress: {
-    strokeColor: {
-      "0%": "#fffff",
-      "100%": "#060217",
-    },
-    strokeWidth: 3,
-    format: (percent) => percent && `${parseInt(percent.toFixed(2))}%`,
-  },
-};
-
 const UploadImage = ({ setOpenPostCard }) => {
   const [image, setImage] = useState(null);
   const [caption, setCaption] = useState("");

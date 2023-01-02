@@ -2,53 +2,102 @@ import { useEffect, useState } from "react";
 import Like from "../assets/like.svg";
 import Comment from "../assets/comment.svg";
 import Share from "../assets/share.svg";
-import { auth, db } from "../../server/firebaseConnection";
+import { db } from "../../server/firebaseConnection";
+import firebase from "firebase/compat/app";
+import { message } from "antd";
+import Send from "../assets/send.png";
 
-function Post({ username }) {
-  const [posts, setPosts] = useState([]);
-  // const user = auth.currentUser;
+function Post({ username, imageURL, caption, postId }) {
+  const [showInput, setShowInput] = useState(false);
+  const [comment, setComment] = useState("");
+  const [postComments, setPostComments] = useState([]);
+
+  const postComment = () => {
+    db.collection("posts")
+      .doc(postId)
+      .collection("comments")
+      .add({
+        text: comment,
+        username: username,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        message.success("comment posted!");
+        setComment("");
+        setShowInput(false);
+      })
+      .catch((err) => {
+        message.error(err);
+      });
+    console.log(comment);
+  };
 
   useEffect(() => {
-    db.collection("posts")
-      .get()
-      .then((snapshot) => {
-        // Iterate over the documents in the collection
-        const data = [];
-        snapshot.forEach((doc) => {
-          // Get the data for each document
-          data.push(doc.data());
-        });
-        setPosts(data);
-      });
-  }, [username]);
+    let unsubscribe;
 
-  console.log(posts);
+    if (postId) {
+      unsubscribe = db
+        .collection("posts")
+        .doc(postId)
+        .collection("comments")
+        .onSnapshot((snapshot) => {
+          setPostComments(snapshot.docs.map((doc) => doc.data()));
+        });
+    }
+
+    return () => {
+      unsubscribe();
+    };
+  }, [postId]);
+
+  console.log(postComments);
+
   return (
     <>
-      {posts.map((post) => (
-        <div className="posts-container">
-          <div className="post">
-            <p id="user">{post.username}</p>
-            <img src={post.imageURL} alt="postImage" className="post-image" />
-            <p className="post-description">{post.caption}</p>
-            <hr style={{ width: "90%" }} />
-            <div className="buttons-container">
-              <button>
-                <img src={Like} alt="likeButton" />
-                Like
-              </button>
-              <button>
-                <img src={Comment} alt="commentButton" />
-                Comment
-              </button>
-              <button>
-                <img src={Share} alt="shareButton" />
-                Share
-              </button>
+      <div className="posts-container">
+        <div className="post">
+          <p id="user">{username}</p>
+          <img src={imageURL} alt="postImage" className="post-image" />
+          <p className="post-description">{caption}</p>
+          <hr style={{ width: "90%" }} />
+          {postComments.map((comment) => (
+            <>
+              <div className="comment-section">
+                <h5 id="username">{comment.username}:</h5>
+                <p>{comment.text}</p>
+              </div>
+              <p>----------------------------</p>
+            </>
+          ))}
+          {showInput ? (
+            <div className="commentInput-container">
+              <input
+                type="text"
+                id="commentInput"
+                placeholder="Comment..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <img src={Send} alt="send button" onClick={postComment} />
             </div>
+          ) : null}
+          <div className="buttons-container">
+            <button>
+              <img src={Like} alt="likeButton" />
+              Like
+            </button>
+            <button onClick={() => setShowInput(!showInput)}>
+              <img src={Comment} alt="commentButton" />
+              Comment
+            </button>
+            <button>
+              <img src={Share} alt="shareButton" />
+              Share
+            </button>
           </div>
         </div>
-      ))}
+        {/* <CommentSection postID={postId} /> */}
+      </div>{" "}
     </>
   );
 }

@@ -92,6 +92,28 @@ hr {
   z-index: 99;
 }
 
+.commentCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    163.89deg,
+    rgba(225, 230, 238, 0.5) 0%,
+    rgba(134, 135, 137, 0.3) 98.05%
+  );
+  width: $maxWidth;
+  height: $maxHeight;
+  position: absolute;
+  backdrop-filter: blur(5px);
+  z-index: 99;
+  transform: translateY(100%);
+  transition: .4s ease-in-out;
+}
+
+.showComment {
+  transform: translateY(0%);
+}
+
 .none {
   display: none;
 }

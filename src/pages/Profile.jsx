@@ -23,13 +23,13 @@ function profile() {
 
   const openMenu = () => {
     setOpen(true);
-
-    if (open == true) {
+    if (open = true) {
       document.querySelector(".navbar").classList.remove("hide");
     }
   };
 
   const [data, setData] = useState([]);
+  -
 
   useEffect(() => {
     // Get the posts collection
@@ -56,6 +56,7 @@ function profile() {
   }, []);
 
   console.log(data);
+
 
   return (
     <>

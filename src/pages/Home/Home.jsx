@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ControlPanel from "../../components/ControlPanel";
 import "../../sass/themes/Home.scss";
-import Wallpaper from "../../assets/view.png";
+
 import UploadImage from "../../components/UploadImage";
 import Search from "../../components/Search";
 import Post from "../../components/Post";
-import { auth } from "../../../server/firebaseConnection";
+import { auth, db } from "../../../server/firebaseConnection";
 
 function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,11 +17,25 @@ function Home() {
 
   const [openPostCard, setOpenPostCard] = useState(false);
   const [openSearchCard, setOpenSearchCard] = useState(false);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     if (username == null) {
       navigate("/login");
     }
+  }, [username]);
+
+  useEffect(() => {
+    db.collection("posts")
+      .get()
+      .then((snapshot) => {
+        setPosts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            post: doc.data(),
+          }))
+        );
+      });
   }, [username]);
 
   return (
@@ -45,11 +59,15 @@ function Home() {
           setOpenPostCard={setOpenPostCard}
           setOpenSearchCard={setOpenSearchCard}
         />
-        {username ? (
-          <Post username={username} key={user.uid} />
-        ) : (
-          navigate("/login")
-        )}
+        {posts.map(({id, post}) => (
+          <Post
+            key={id}
+            postId={id}
+            imageURL={post.imageURL}
+            caption={post.caption}
+            username={user?.displayName}
+          />
+        ))}
       </div>
     </>
   );

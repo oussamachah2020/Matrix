@@ -24,3 +24,40 @@
   top: 10px;
   margin-bottom: 20px;
 }
+
+.comment-section {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+
+// #username {
+//   position: relative;
+//   right: 10%;
+// }
+
+#commentInput {
+  height: 35px;
+  background-color: rgb(15, 52, 108);
+  caret-color: white;
+  color: white;
+  border: none;
+  margin: 1rem 0;
+}
+
+.showComment {
+  display: none;
+}
+
+.commentInput-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.commentInput-container img {
+  width: 25px;
+  cursor: pointer;
+}
