@@ -31,12 +31,14 @@ function Home() {
       .then((snapshot) => {
         setPosts(
           snapshot.docs.map((doc) => ({
-            id: doc.id,
+            postId: doc.id,
             post: doc.data(),
           }))
         );
       });
   }, [username]);
+
+  // console.log(posts);
 
   return (
     <>
@@ -59,10 +61,10 @@ function Home() {
           setOpenPostCard={setOpenPostCard}
           setOpenSearchCard={setOpenSearchCard}
         />
-        {posts.map(({id, post}) => (
+        {posts.map(({ postId, post }) => (
           <Post
-            key={id}
-            postId={id}
+            key={postId}
+            postId={postId}
             imageURL={post.imageURL}
             caption={post.caption}
             username={user?.displayName}

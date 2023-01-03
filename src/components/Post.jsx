@@ -6,11 +6,21 @@ import { db } from "../../server/firebaseConnection";
 import firebase from "firebase/compat/app";
 import { message } from "antd";
 import Send from "../assets/send.png";
+import CommentOptions from "./CommentOptions.jsx";
+import PostComments from "./PostComments";
 
 function Post({ username, imageURL, caption, postId }) {
   const [showInput, setShowInput] = useState(false);
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const postComment = () => {
     db.collection("posts")
@@ -41,7 +51,12 @@ function Post({ username, imageURL, caption, postId }) {
         .doc(postId)
         .collection("comments")
         .onSnapshot((snapshot) => {
-          setPostComments(snapshot.docs.map((doc) => doc.data()));
+          setPostComments(
+            snapshot.docs.map((doc) => ({
+              commentId: doc.id,
+              comment: doc.data(),
+            }))
+          );
         });
     }
 
@@ -60,13 +75,22 @@ function Post({ username, imageURL, caption, postId }) {
           <img src={imageURL} alt="postImage" className="post-image" />
           <p className="post-description">{caption}</p>
           <hr style={{ width: "90%" }} />
-          {postComments.map((comment) => (
+          {postComments.map(({ commentId, comment }) => (
             <>
-              <div className="comment-section">
-                <h5 id="username">{comment.username}:</h5>
-                <p>{comment.text}</p>
-              </div>
-              <p>----------------------------</p>
+              <PostComments
+                key={commentId}
+                commentId={commentId}
+                username={comment.username}
+                comment={comment.text}
+                showModal={showModal}
+              />
+              <CommentOptions
+                isModalOpen={isModalOpen}
+                handleCancel={handleCancel}
+                commentId={commentId}
+                postId={postId}
+                comment={comment.text}
+              />
             </>
           ))}
           {showInput ? (

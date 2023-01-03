@@ -22,14 +22,13 @@ function profile() {
   const user = auth.currentUser;
 
   const openMenu = () => {
-    setOpen(true);
-    if (open = true) {
+    // setOpen(true);
+    if ((open = true)) {
       document.querySelector(".navbar").classList.remove("hide");
     }
   };
-
+  
   const [data, setData] = useState([]);
-  -
 
   useEffect(() => {
     // Get the posts collection
@@ -56,7 +55,6 @@ function profile() {
   }, []);
 
   console.log(data);
-
 
   return (
     <>
@@ -98,7 +96,11 @@ function profile() {
             <div className="post-container">
               <div className="post">
                 <p id="user">{item.username}</p>
-                <img src={item.imageURL} alt="postImage" className="post-image" />
+                <img
+                  src={item.imageURL}
+                  alt="postImage"
+                  className="post-image"
+                />
                 <p className="post-description">{item.caption}</p>
                 <hr style={{ width: "90%" }} />
                 <div className="buttons-container">
