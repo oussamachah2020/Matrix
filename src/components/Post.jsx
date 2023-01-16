@@ -14,13 +14,25 @@ function Post({ username, imageURL, caption, postId }) {
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [counter, setCounter] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const [reactionData, setReactionData] = useState([]);
+  const [reactionId, setReactionId] = useState("");
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+  // const showModal = () => {
+  //   setIsModalOpen(false);
+  // };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  // useEffect(() => {
+  //   db.collection("posts").doc(postId).collection("reaction").add({
+  //     counter: counter,
+  //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  //     username: username,
+  //   });
+  // }, []);
 
   const postComment = () => {
     db.collection("posts")
@@ -65,7 +77,45 @@ function Post({ username, imageURL, caption, postId }) {
     };
   }, [postId]);
 
-  console.log(postComments);
+  useEffect(() => {
+    let unsubscribe;
+
+    if (postId) {
+      unsubscribe = () => {
+        db.collection("posts")
+          .doc(postId)
+          .collection("reaction")
+          .onSnapshot((snapshot) => {
+            setReactionData(
+              snapshot.docs.map((doc) => ({
+                reactionId: doc.id,
+                reactionCount: doc.data(),
+              }))
+            );
+          });
+      };
+    }
+
+    return () => {
+      unsubscribe();
+    };
+  }, [postId]);
+
+  const countLikes = () => {
+    // if (liked == false) {
+    //   setCounter((counter) => counter + 1);
+    //   db.collection("posts")
+    //     .doc(postId)
+    //     .collection("reaction")
+    //     .doc(`${reactionId}`)
+    //     .update({
+    //       counter: counter,
+    //     });
+    //   setLiked(true);
+    // } else {
+    //   message.info("you can like a post only once");
+    // }
+  }
 
   return (
     <>
@@ -82,10 +132,11 @@ function Post({ username, imageURL, caption, postId }) {
                 commentId={commentId}
                 username={comment.username}
                 comment={comment.text}
-                showModal={showModal}
+                setIsModalOpen={setIsModalOpen}
               />
               <CommentOptions
                 isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
                 handleCancel={handleCancel}
                 commentId={commentId}
                 postId={postId}
@@ -106,9 +157,18 @@ function Post({ username, imageURL, caption, postId }) {
             </div>
           ) : null}
           <div className="buttons-container">
-            <button>
+            <button onClick={countLikes}>
               <img src={Like} alt="likeButton" />
               Like
+              {reactionData.map((reactionId, reaction) => (
+                <span
+                  id="likeCounter"
+                  key={reactionId}
+                  onChange={() => setReactionId(reactionId)}
+                >
+                  {reaction}
+                </span>
+              ))}
             </button>
             <button onClick={() => setShowInput(!showInput)}>
               <img src={Comment} alt="commentButton" />
@@ -120,7 +180,6 @@ function Post({ username, imageURL, caption, postId }) {
             </button>
           </div>
         </div>
-        {/* <CommentSection postID={postId} /> */}
       </div>{" "}
     </>
   );

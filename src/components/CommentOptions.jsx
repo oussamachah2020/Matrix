@@ -1,9 +1,10 @@
-import { Modal, Button, Space, message, Input, Form } from "antd";
-import { db } from "../../server/firebaseConnection";
+import { Modal, Button, Space, message, Input } from "antd";
+import { db, auth } from "../../server/firebaseConnection";
 import { useState } from "react";
 
 const commentOptions = ({
   isModalOpen,
+  setIsModalOpen,
   handleCancel,
   commentId,
   postId,
@@ -11,6 +12,7 @@ const commentOptions = ({
 }) => {
   const [commentModal, setCommentModal] = useState(false);
   const [newComment, setNewComment] = useState("");
+  const user = auth.currentUser
 
   const openCommentModal = () => {
     setCommentModal(true);
@@ -24,7 +26,7 @@ const commentOptions = ({
       .delete()
       .then(() => {
         message.success("Comment deleted");
-        isModalOpen = !isModalOpen;
+        setIsModalOpen(false);
       })
       .catch((err) => {
         message.error(err);
@@ -41,8 +43,7 @@ const commentOptions = ({
       })
       .then(() => {
         message.success("Comment updated");
-        commentModal = !commentModal;
-        isModalOpen = !isModalOpen;
+        setCommentModal(false);
       })
       .catch((err) => {
         message.error(err);
@@ -51,12 +52,7 @@ const commentOptions = ({
 
   return (
     <>
-      <Modal
-        title="Commet Options"
-        open={isModalOpen}
-        onCa
-        wrapncel={handleCancel}
-      >
+      <Modal title="Commet Options" open={isModalOpen} onCancel={handleCancel}>
         <Space className="site-button-ghost-wrapper" wrap>
           <Button
             type="text"

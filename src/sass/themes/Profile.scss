@@ -3,7 +3,7 @@
 @import "../layout/profileLayout.scss";
 
 .profile {
-  overflow-x: hidden;
+  overflow-x: auto;
   background: $background;
   width: $maxWidth;
   // height: $maxHeight;
@@ -11,6 +11,18 @@
   position: absolute;
   padding-top: 1.5rem;
   gap: 1rem;
+}
+
+.profile_pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile_pic > img {
+  position: relative;
+  top: 2.5rem;
+  right: 2rem;
 }
 
 #userEmail {

@@ -14,21 +14,17 @@ import Back from "../assets/arrow.svg";
 import Menu from "../assets/burgerMenu.svg";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import ProfilePicUploader from "../components/profilePicUploader";
+import Camera from "../assets/camera.png";
 
 function profile() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [open, setOpen] = useState(false);
   const username = searchParams.get("username");
+  const [open, setOpen] = useState(false);
+  const [openUploader, setOpenUploader] = useState(false);
   const user = auth.currentUser;
-
-  const openMenu = () => {
-    // setOpen(true);
-    if ((open = true)) {
-      document.querySelector(".navbar").classList.remove("hide");
-    }
-  };
-  
   const [data, setData] = useState([]);
+  const [profile, setProfile] = useState("");
 
   useEffect(() => {
     // Get the posts collection
@@ -54,7 +50,22 @@ function profile() {
     }
   }, []);
 
-  console.log(data);
+  useEffect(() => {
+    const getProfilePic = async () => {
+      db.collection("profile_pic")
+        .where("username", "==", user?.displayName)
+        .onSnapshot((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            setProfile(doc.data().imageURL);
+            setPicId(doc.id);
+          });
+        });
+    };
+
+    getProfilePic();
+  }, []);
+
+  // console.log(picId);
 
   return (
     <>
@@ -67,19 +78,28 @@ function profile() {
             src={Menu}
             alt="menuButton"
             id="menuBtn"
-            onClick={openMenu}
+            onClick={() => setOpen(true)}
             style={{ cursor: "pointer" }}
           />
         </div>
-        <Avatar
-          src={Sword}
-          style={{
-            backgroundColor: "rgb(14, 52, 108)",
-            verticalAlign: "middle",
-          }}
-          size={100}
-        />
-        <h2 id="username">{username}</h2>
+        <div className="profile_pic">
+          <Avatar
+            src={profile}
+            style={{
+              backgroundColor: "rgb(14, 52, 108)",
+              verticalAlign: "middle",
+            }}
+            size={100}
+          />
+          <img
+            src={Camera}
+            alt="edit_pen"
+            style={{ width: "18px", cursor: "pointer" }}
+            title="edit image"
+            onClick={() => setOpenUploader(true)}
+          />
+        </div>
+        <h2 id="username">{user?.displayName}</h2>
         <p id="userEmail">{user.email}</p>
         <div className="counter-container">
           <p>
@@ -123,7 +143,12 @@ function profile() {
           ))}
         </div>
       </div>
-      <Navbar setOpen={setOpen} open={open} />
+      {open ? <Navbar setOpen={setOpen} /> : null}
+      {openUploader ? (
+        <div className="uploadCard">
+          <ProfilePicUploader setOpenUploader={setOpenUploader} />
+        </div>
+      ) : null}
     </>
   );
 }
