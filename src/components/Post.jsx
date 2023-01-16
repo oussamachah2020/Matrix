@@ -8,6 +8,7 @@ import { message } from "antd";
 import Send from "../assets/send.png";
 import CommentOptions from "./CommentOptions.jsx";
 import PostComments from "./PostComments";
+import PostOptions from "./PostOptions";
 
 function Post({ username, imageURL, caption, postId }) {
   const [showInput, setShowInput] = useState(false);
@@ -115,13 +116,16 @@ function Post({ username, imageURL, caption, postId }) {
     // } else {
     //   message.info("you can like a post only once");
     // }
-  }
+  };
 
   return (
     <>
       <div className="posts-container">
         <div className="post">
-          <p id="user">{username}</p>
+          <div className="post_header">
+            <p id="user">{username}</p>
+            <PostOptions postId={postId}/>
+          </div>
           <img src={imageURL} alt="postImage" className="post-image" />
           <p className="post-description">{caption}</p>
           <hr style={{ width: "90%" }} />
