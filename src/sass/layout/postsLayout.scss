@@ -51,6 +51,13 @@
   gap: 7rem;
 }
 
+.alertBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 #commentInput {
   height: 35px;
   background-color: rgb(15, 52, 108);

@@ -7,8 +7,12 @@ import Message from "../assets/message.svg";
 import Sword from "../assets/sword.jpg";
 import { Link } from "react-router-dom";
 import { Avatar } from "antd";
+import { db } from "../../server/firebaseConnection";
+
 
 function ControlPanel({ username, setOpenPostCard, setOpenSearchCard }) {
+  const [profile, setProfile] = useState("");
+
   const showUpload = () => {
     setOpenPostCard(true)
   };
@@ -16,6 +20,21 @@ function ControlPanel({ username, setOpenPostCard, setOpenSearchCard }) {
   const showSearch = () => {
     setOpenSearchCard(true)
   };
+
+  useEffect(() => {
+    const getProfilePic = async () => {
+      db.collection("profile_pic")
+        .where("username", "==", username)
+        .onSnapshot((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            setProfile(doc.data().imageURL);
+            setPicId(doc.id);
+          });
+        });
+    };
+
+    getProfilePic();
+  }, []);
 
   return (
     <div className="Panel">
@@ -34,7 +53,7 @@ function ControlPanel({ username, setOpenPostCard, setOpenSearchCard }) {
         </Link>
         <Link to={`/profile?username=${username}`} title={username}>
           <Avatar
-            src={Sword}
+            src={profile}
             style={{
               backgroundColor: "rgb(14, 52, 108)",
               verticalAlign: "middle",

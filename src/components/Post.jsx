@@ -43,7 +43,7 @@ function Post({ username, imageURL, caption, postId }) {
       .collection("comments")
       .add({
         text: comment,
-        username: username,
+        username: loggedInUser?.displayName,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {

@@ -18,6 +18,10 @@ const commentOptions = ({
     setCommentModal(true);
   };
 
+  const closeModal = () => {
+    setCommentModal(false)
+  }
+
   const deleteComment = () => {
     db.collection("posts")
       .doc(postId)
@@ -67,7 +71,7 @@ const commentOptions = ({
         </Space>
       </Modal>
       {commentModal ? (
-        <Modal title="Edit Comment" open={isModalOpen} onCancel={handleCancel}>
+        <Modal title="Edit Comment" open={isModalOpen} onCancel={closeModal}>
           <Space className="site-button-ghost-wrapper" wrap>
             <Input
               defaultValue={comment}

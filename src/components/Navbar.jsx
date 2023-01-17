@@ -14,13 +14,6 @@ import { auth } from "../../server/firebaseConnection";
 import { toast } from "react-toastify";
 
 function Navbar({ setOpen }) {
-  // const closeMenu = () => {
-  //   setOpen(false);
-  //   if (open == false) {
-  //     document.querySelector(".navbar").classList.add("hide");
-  //   }
-  // };
-
   const navigate = useNavigate();
 
   const SignOut = () => {
@@ -36,7 +29,12 @@ function Navbar({ setOpen }) {
 
   return (
     <div className="navbar hide">
-      <img src={Close} alt="closeButton" id="closeBtn" onClick={() => setOpen(false)} />
+      <img
+        src={Close}
+        alt="closeButton"
+        id="closeBtn"
+        onClick={() => setOpen(false)}
+      />
       <div className="account-informations">
         <p>Account Informations</p>
         <Link>
