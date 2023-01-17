@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Like from "../assets/like.svg";
 import Comment from "../assets/comment.svg";
 import Share from "../assets/share.svg";
-import { db } from "../../server/firebaseConnection";
+import { db, auth } from "../../server/firebaseConnection";
 import firebase from "firebase/compat/app";
 import { message } from "antd";
 import Send from "../assets/send.png";
@@ -19,6 +19,8 @@ function Post({ username, imageURL, caption, postId }) {
   const [liked, setLiked] = useState(false);
   const [reactionData, setReactionData] = useState([]);
   const [reactionId, setReactionId] = useState("");
+
+  const loggedInUser = auth.currentUser;
 
   // const showModal = () => {
   //   setIsModalOpen(false);
@@ -124,7 +126,7 @@ function Post({ username, imageURL, caption, postId }) {
         <div className="post">
           <div className="post_header">
             <p id="user">{username}</p>
-            <PostOptions postId={postId}/>
+            <PostOptions postId={postId} postUser={username}/>
           </div>
           <img src={imageURL} alt="postImage" className="post-image" />
           <p className="post-description">{caption}</p>

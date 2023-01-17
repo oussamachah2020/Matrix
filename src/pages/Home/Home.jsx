@@ -62,13 +62,13 @@ function Home() {
           setOpenSearchCard={setOpenSearchCard}
         />
         {posts.map(({ postId, post }) => (
-          <Post
-            key={postId}
-            postId={postId}
-            imageURL={post.imageURL}
-            caption={post.caption}
-            username={user?.displayName}
-          />
+            <Post
+              key={postId}
+              postId={postId}
+              imageURL={post.imageURL}
+              caption={post.caption}
+              username={post.username}
+            />
         ))}
       </div>
     </>
