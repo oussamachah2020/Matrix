@@ -9,14 +9,15 @@
 .panel-container {
   background-color: $defaultColor;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   border-radius: 50px;
   margin: 1rem;
-  width: 378px;
+  // width: 378px;
   height: 47px;
   position: fixed;
   top: 90%;
+  width: 95vw;
 }
 
 .panel-container img {
