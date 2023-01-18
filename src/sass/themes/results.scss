@@ -1,0 +1,13 @@
+@import "../variables/variables.scss";
+@import "../base/typography.scss";
+@import "../layout/postsLayout.scss";
+
+.searched_profile {
+  background: $background;
+  width: $maxWidth;
+  height: $maxHeight;
+  color: $defaultColor;
+  position: fixed;
+  overflow: auto;
+  z-index: -1;
+}

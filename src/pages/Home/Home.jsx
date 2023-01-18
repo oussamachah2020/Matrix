@@ -57,7 +57,7 @@ function Home() {
       <div className="home">
         <h2>Matrix</h2>
         <ControlPanel
-          username={username}
+          username={user?.displayName}
           setOpenPostCard={setOpenPostCard}
           setOpenSearchCard={setOpenSearchCard}
         />

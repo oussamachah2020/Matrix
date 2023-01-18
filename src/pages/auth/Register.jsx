@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../../sass/themes/register.scss";
 import "../../sass/layout/registerLayout.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../../server/firebaseConnection";
+import { auth, db } from "../../../server/firebaseConnection";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -26,6 +26,10 @@ function Register() {
         .then((authUser) => {
           return authUser.user.updateProfile({
             displayName: username,
+          });
+
+          db.collection("users").add({
+            username: username,
           });
         })
         .catch((err) => {

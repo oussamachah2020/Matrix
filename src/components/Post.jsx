@@ -4,7 +4,7 @@ import Comment from "../assets/comment.svg";
 import Share from "../assets/share.svg";
 import { db, auth } from "../../server/firebaseConnection";
 import firebase from "firebase/compat/app";
-import { message } from "antd";
+import { Avatar, message } from "antd";
 import Send from "../assets/send.png";
 import CommentOptions from "./CommentOptions.jsx";
 import PostComments from "./PostComments";
@@ -20,7 +20,23 @@ function Post({ username, imageURL, caption, postId }) {
   const [reactionData, setReactionData] = useState([]);
   const [reactionId, setReactionId] = useState("");
 
+  const [profile, setProfile] = useState("");
   const loggedInUser = auth.currentUser;
+
+  useEffect(() => {
+    const getProfilePic = async () => {
+      db.collection("profile_pic")
+        .where("username", "==", username)
+        .onSnapshot((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            setProfile(doc.data().imageURL);
+            setPicId(doc.id);
+          });
+        });
+    };
+
+    getProfilePic();
+  }, []);
 
   // const showModal = () => {
   //   setIsModalOpen(false);
@@ -125,8 +141,22 @@ function Post({ username, imageURL, caption, postId }) {
       <div className="posts-container">
         <div className="post">
           <div className="post_header">
-            <p id="user">{username}</p>
-            <PostOptions postId={postId} postUser={username}/>
+            <div className="user" style={{ position: "relative" }}>
+              <Avatar
+                style={{
+                  backgroundColor: "rgb(14, 52, 108)",
+                  verticalAlign: "middle",
+                }}
+                size={35}
+                src={profile}
+              />
+            <div style={{position: "relative"}}>
+              <p id="user">{username}</p>
+            </div>
+            </div>
+            <div style={{ position: "relative" }}>
+              <PostOptions postId={postId} postUser={username} />
+            </div>
           </div>
           <img src={imageURL} alt="postImage" className="post-image" />
           <p className="post-description">{caption}</p>

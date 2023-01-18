@@ -12,7 +12,7 @@ import { db } from "../../server/firebaseConnection";
 
 function ControlPanel({ username, setOpenPostCard, setOpenSearchCard }) {
   const [profile, setProfile] = useState("");
-
+  
   const showUpload = () => {
     setOpenPostCard(true)
   };

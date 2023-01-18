@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Avatar } from "antd";
-import Sword from "../assets/sword.jpg";
 import "../sass/themes/Profile.scss";
 import "../sass/layout/postsLayout.scss";
 import "../sass/themes/upload.scss";
@@ -16,11 +15,11 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import ProfilePicUploader from "../components/profilePicUploader";
 import Camera from "../assets/camera.png";
-import UserAvatar from "../components/UserAvatar";
 
-function profile() {
+function SearchedProfile() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const username = searchParams.get("username");
+  const username = searchParams.get("userName");
+
   const [open, setOpen] = useState(false);
   const [openUploader, setOpenUploader] = useState(false);
   const user = auth.currentUser;
@@ -34,7 +33,7 @@ function profile() {
       const unsubscribe = db
         .collection("posts")
         // Create a query with a filter on the user ID field
-        .where("username", "==", user.displayName)
+        .where("username", "==", username)
         .onSnapshot((snapshot) => {
           // Get the documents in the snapshot
           const documents = snapshot.docs;
@@ -54,7 +53,7 @@ function profile() {
   useEffect(() => {
     const getProfilePic = async () => {
       db.collection("profile_pic")
-        .where("username", "==", user?.displayName)
+        .where("username", "==", username)
         .onSnapshot((snapshot) => {
           snapshot.docs.forEach((doc) => {
             setProfile(doc.data().imageURL);
@@ -84,17 +83,16 @@ function profile() {
           />
         </div>
         <div className="profile_pic">
-          <UserAvatar />
-          <img
-            src={Camera}
-            alt="edit_pen"
-            style={{ width: "18px", cursor: "pointer" }}
-            title="edit image"
-            onClick={() => setOpenUploader(true)}
-          />
+          <Avatar
+            style={{
+              backgroundColor: "rgb(14, 52, 108)",
+              verticalAlign: "middle",
+            }}
+            size={100}
+            src={profile}
+          ></Avatar>
         </div>
-        <h2 id="username">{user?.displayName}</h2>
-        <p id="userEmail">{user.email}</p>
+        <h2 id="username">{username}</h2>
         <div className="counter-container">
           <p>
             <span id="counter-container--followers">0</span> Followers
@@ -105,7 +103,7 @@ function profile() {
           </p>
         </div>
         <div className="user-posts">
-          <p style={{ margin: "20px 0" }}>Your Posts</p>
+          <p style={{ margin: "20px 0" }}>{username}'s Posts</p>
           {data.map((item) => (
             <div className="post-container">
               <div className="post">
@@ -147,4 +145,4 @@ function profile() {
   );
 }
 
-export default profile;
+export default SearchedProfile;

@@ -1,0 +1,47 @@
+@import "../variables/variables.scss";
+@import "../base/typography.scss";
+@import "../layout/postsLayout.scss";
+
+.intro_page {
+  background: $background;
+  width: $maxWidth;
+  height: $maxHeight;
+  color: $defaultColor;
+  position: fixed;
+  overflow: auto;
+  z-index: -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#intro_title {
+    font-weight: 500;
+    font-size: 3rem;
+    font-family: 'Rubik Glitch';
+    // top: 0;
+}
+
+#intro_text {
+    opacity: .7;
+    font-style: italic;
+}
+
+#intro_description {
+    font-weight: 600;
+    font-family: 'Poppins';
+}
+
+#intro_button {
+    margin-top: 2.5rem;
+    width: 80%;
+    padding: .8rem;
+    background-color: rgba(6, 58, 88, 0.781);
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+}
