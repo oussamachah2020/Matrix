@@ -33,6 +33,16 @@ i've used `draw.io` [app](https://app.diagrams.net/) is a programme that helps y
 
 ![Screenshot from 2023-01-20 21-07-28](https://user-images.githubusercontent.com/72669865/213796219-0ad91378-b404-4503-a14e-22deee08b2bb.png)
 
+#Demo
+
+clone this repo
+``` git clone https://github.com/oussamachah2020/Matrix.git  ```
+
+access the directory
+``` cd Matrix ```
+
+and run the following command
+``` npm run dev ```
 
 ## 🔗 Links
 
