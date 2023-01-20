@@ -16,6 +16,9 @@
 - Firebase Storage to store user data
 - Firebase Storage to store the images uploaded by the user
 
+> UI **Design**
+- Figma
+
 ![Screenshot from 2023-01-20 19-12-34](https://user-images.githubusercontent.com/72669865/213777172-8d784e76-45b3-49c4-8225-94d1d1ba3ba2.png)
 
 ## Backend Design
@@ -25,6 +28,11 @@
 i've used `draw.io` [app](https://app.diagrams.net/) is a programme that helps you build your backend design using different diagrams and shapes
 
 ![Screenshot from 2023-01-20 19-15-47](https://user-images.githubusercontent.com/72669865/213777110-eba9db29-3de9-4dfd-ae8f-83065964d0d6.png)
+
+# app design 
+
+![Screenshot from 2023-01-20 21-07-28](https://user-images.githubusercontent.com/72669865/213796219-0ad91378-b404-4503-a14e-22deee08b2bb.png)
+
 
 ## 🔗 Links
 
