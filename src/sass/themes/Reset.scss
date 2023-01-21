@@ -1,0 +1,18 @@
+@import "../variables/variables.scss";
+@import "../base/typography.scss";
+@import "../layout/postsLayout.scss";
+
+.reset {
+  background: $background;
+  width: $maxWidth;
+  height: $maxHeight;
+  color: $defaultColor;
+  position: fixed;
+  overflow: auto;
+  z-index: -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
+}

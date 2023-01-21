@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile";
 import SearchedProfile from "./pages/SearchedProfile";
 import Intro from "./pages/Home/Intro";
+import Reset from "./pages/Reset";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/Home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/results" element={<SearchedProfile />} />
+          <Route path="/reset" element={<Reset />} />
         </Routes>
       </Router>
     </div>

@@ -16,6 +16,7 @@
   border: 1px solid #ffff;
   border-radius: 10px;
   width: 95vw;
+  // z-index: 0;
 }
 
 #user {
@@ -46,16 +47,17 @@
 .post_header {
   display: inline-flex;
   width: 90%;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
-  // gap: 7rem;
+  gap: 1rem;
+  z-index: 1;
 }
 
 .user {
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 2.5rem;
+  gap: 5rem;
   width: 100%;
 }
 

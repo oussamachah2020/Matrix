@@ -59,6 +59,7 @@ function Login() {
           }
         />
         <input type="submit" value="validate" />
+      <Link to="/reset" style={{ position: "relative", top: "-10%" }}>Forget Password?</Link>
       </form>
       <p>
         Already have an account ! <Link to="/register">Sign Up</Link>
