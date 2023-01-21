@@ -19,6 +19,18 @@
   align-items: center;
 }
 
+.follow_button {
+  width: 80%;
+  height: 35px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: rgb(35, 126, 201);
+  color: #ffff;
+  border: none;
+  cursor: pointer;
+}
+
 .profile_pic > img {
   position: relative;
   top: 2.5rem;

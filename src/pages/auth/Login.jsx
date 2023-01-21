@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../../sass/themes/login.scss";
 import "../../sass/layout/loginLayout.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../../server/firebaseConnection";
+import { auth, signInWithGoogle } from "../../../server/firebaseConnection";
 import { toast } from "react-toastify";
 
 function Login() {
@@ -63,6 +63,10 @@ function Login() {
       <p>
         Already have an account ! <Link to="/register">Sign Up</Link>
       </p>
+        <p>---------------------------------------</p>
+      <div className="google_auth">
+        <button className="google_auth--button" onClick={signInWithGoogle}>Sign In with google</button>
+      </div>
     </div>
   );
 }

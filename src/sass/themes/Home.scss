@@ -35,8 +35,10 @@
 
 .buttons-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+  width: 100%;
+  // flex-grow: 1;
   gap: 2.5rem;
   margin: 1rem 0;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Avatar } from "antd";
+import { Avatar, message } from "antd";
 import "../sass/themes/Profile.scss";
 import "../sass/layout/postsLayout.scss";
 import "../sass/themes/upload.scss";
@@ -25,6 +25,8 @@ function SearchedProfile() {
   const user = auth.currentUser;
   const [data, setData] = useState([]);
   const [profile, setProfile] = useState("");
+  const [followers, setFollowers] = useState();
+  const [numberOfFollowers, setNumberOfFollowers] = useState(0);
 
   useEffect(() => {
     // Get the posts collection
@@ -65,6 +67,34 @@ function SearchedProfile() {
     getProfilePic();
   }, []);
 
+  useEffect(() => {
+    const getFollowers = async () => {
+      db.collection("followers")
+        .where("username", "==", username)
+        .onSnapshot((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            setFollowers(doc.data().followers_names);
+          })
+        })
+        setNumberOfFollowers(followers.length)
+    };
+
+    getFollowers();
+  }, []);
+
+
+  console.log(numberOfFollowers);
+
+  const addFollower = () => {
+    db.collection("followers")
+      .add({
+        followers_names: [user?.displayName],
+        username: username,
+      })
+      .then(message.success(`now you are following ${username}`))
+      .catch((err) => console.log(err));
+  };
+
   // console.log(picId);
 
   return (
@@ -95,13 +125,16 @@ function SearchedProfile() {
         <h2 id="username">{username}</h2>
         <div className="counter-container">
           <p>
-            <span id="counter-container--followers">0</span> Followers
+            <span id="counter-container--followers">{numberOfFollowers}</span> Followers
           </p>
           <span>.</span>
           <p>
             <span id="counter-container--following">0</span> Following
           </p>
         </div>
+        <button className="follow_button" onClick={addFollower}>
+          Follow
+        </button>
         <div className="user-posts">
           <p style={{ margin: "20px 0" }}>{username}'s Posts</p>
           {data.map((item) => (

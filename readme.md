@@ -4,13 +4,13 @@
 
 ## Used technologies
 
-> Front-end
+> **Front-end**
 
 - ReactJs
 - sass for styling
 - ant design Api (for built components) [Documentation](https://ant.design/)
 
-> Back-end (Firebase a NoSQL DATABSE)
+> **Back-end** (Firebase a NoSQL DATABSE)
 
 - Firebase authentication
 - Firebase Storage to store user data

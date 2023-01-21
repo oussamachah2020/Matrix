@@ -24,3 +24,18 @@ body {
 input:not([type="submit"]):focus {
   outline: solid rgb(62, 134, 226);
 }
+
+
+.google_auth--button {
+  height: 45px;
+  width: 80vw;
+  border: none;
+  background-color: #fff;
+  outline: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background-image: url("../../assets/google.svg");
+  background-repeat: no-repeat;
+  background-size: 40px;
+  background-position: 5px 3px;
+}

@@ -2,6 +2,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -19,5 +20,23 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 const auth = firebaseApp.auth();
 const db = firebaseApp.firestore();
 const storage = firebaseApp.storage();
+const provider = new GoogleAuthProvider();
 
-export { auth, db, storage };
+const signInWithGoogle = () => {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      // console.log(result);
+      const name = result.user?.displayName;
+      const email = result.user.email;
+      const profilePic = result.user.photoURL;
+
+      localStorage.setItem("name", name)
+      localStorage.setItem("email", email)
+      localStorage.setItem("profilePic", profilePic)
+
+      location.assign(`/Home?username=${name}`)
+    })
+    .catch((err) => console.log(err));
+};
+
+export { auth, db, storage, signInWithGoogle };
