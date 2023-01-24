@@ -13,44 +13,42 @@ import Back from "../assets/arrow.svg";
 import Menu from "../assets/burgerMenu.svg";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import ProfilePicUploader from "../components/profilePicUploader";
-import Camera from "../assets/camera.png";
+import { arrayUnion } from "firebase/firestore";
+import FollowersContainer from "../components/FollowersContainer";
+import Spinner from "../components/Spinner";
 
 function SearchedProfile() {
   const [searchParams, setSearchParams] = useSearchParams();
   const username = searchParams.get("userName");
 
   const [open, setOpen] = useState(false);
-  const [openUploader, setOpenUploader] = useState(false);
+  const [profilePic, setProfilePic] = useState("");
   const user = auth.currentUser;
-  const [data, setData] = useState([]);
-  const [profile, setProfile] = useState("");
-  const [followers, setFollowers] = useState();
+
+  const [userPosts, setUserPosts] = useState([]);
+  const [followers, setFollowers] = useState([]);
+  const [followId, setFollowId] = useState("");
   const [numberOfFollowers, setNumberOfFollowers] = useState(0);
+  const [showFollowersCard, setShowFollowersCard] = useState(false);
 
   useEffect(() => {
-    // Get the posts collection
-    if (user) {
-      // Get the collection
+    if (username) {
       const unsubscribe = db
         .collection("posts")
-        // Create a query with a filter on the user ID field
         .where("username", "==", username)
         .onSnapshot((snapshot) => {
-          // Get the documents in the snapshot
           const documents = snapshot.docs;
           const posts = [];
           documents.forEach((doc) => {
-            // console.log(doc.data());
-            posts.push(doc.data());
-            setData(posts);
+            posts.push({ data: doc.data(), id: doc.id });
+            setUserPosts(posts);
           });
-          // Set the data state with the documents
         });
-      // Unsubscribe from the snapshot when the component unmounts
       return () => unsubscribe();
     }
   }, []);
+
+  console.log(userPosts);
 
   useEffect(() => {
     const getProfilePic = async () => {
@@ -58,8 +56,7 @@ function SearchedProfile() {
         .where("username", "==", username)
         .onSnapshot((snapshot) => {
           snapshot.docs.forEach((doc) => {
-            setProfile(doc.data().imageURL);
-            setPicId(doc.id);
+            setProfilePic(doc.data().imageURL);
           });
         });
     };
@@ -68,34 +65,43 @@ function SearchedProfile() {
   }, []);
 
   useEffect(() => {
-    const getFollowers = async () => {
-      db.collection("followers")
-        .where("username", "==", username)
-        .onSnapshot((snapshot) => {
-          snapshot.docs.forEach((doc) => {
-            setFollowers(doc.data().followers_names);
-          })
-        })
-        setNumberOfFollowers(followers.length)
-    };
-
-    getFollowers();
-  }, []);
-
-
-  console.log(numberOfFollowers);
+    if (username) {
+      const getFollowers = () => {
+        db.collection("followers")
+          .where("username", "==", username)
+          .onSnapshot((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              if (doc) {
+                setFollowers(doc.data());
+                setFollowId(doc.id);
+              }
+            });
+          });
+      };
+      getFollowers();
+      console.log(followers);
+    }
+  }, [username]);
 
   const addFollower = () => {
-    db.collection("followers")
-      .add({
-        followers_names: [user?.displayName],
-        username: username,
-      })
-      .then(message.success(`now you are following ${username}`))
-      .catch((err) => console.log(err));
+    if (followId) {
+      db.collection("followers")
+        .doc(followId)
+        .update({
+          followersNames: arrayUnion(user?.displayName),
+        })
+        .then(message.success(`now you are following ${username}`))
+        .catch((err) => console.log(err));
+    } else {
+      db.collection("followers")
+        .add({
+          followersNames: [user?.displayName],
+          username: username,
+        })
+        .then(message.success(`now you are following ${username}`))
+        .catch((err) => console.log(err));
+    }
   };
-
-  // console.log(picId);
 
   return (
     <>
@@ -119,13 +125,16 @@ function SearchedProfile() {
               verticalAlign: "middle",
             }}
             size={100}
-            src={profile}
+            src={profilePic}
           ></Avatar>
         </div>
         <h2 id="username">{username}</h2>
         <div className="counter-container">
-          <p>
-            <span id="counter-container--followers">{numberOfFollowers}</span> Followers
+          <p onClick={() => setShowFollowersCard(true)}>
+            <span id="counter-container--followers">
+              {followers.followersNames ? followers.followersNames.length : 0}
+            </span>{" "}
+            Followers
           </p>
           <span>.</span>
           <p>
@@ -137,16 +146,16 @@ function SearchedProfile() {
         </button>
         <div className="user-posts">
           <p style={{ margin: "20px 0" }}>{username}'s Posts</p>
-          {data.map((item) => (
+          {userPosts.map((post) => (
             <div className="post-container">
-              <div className="post">
-                <p id="user">{item.username}</p>
+              <div key={post.id} className="post">
+                <p id="user">{post.data.username}</p>
                 <img
-                  src={item.imageURL}
+                  src={post.data.imageURL}
                   alt="postImage"
                   className="post-image"
                 />
-                <p className="post-description">{item.caption}</p>
+                <p className="post-description">{post.data.caption}</p>
                 <hr style={{ width: "90%" }} />
                 <div className="buttons-container">
                   <button>
@@ -169,9 +178,11 @@ function SearchedProfile() {
         </div>
       </div>
       {open ? <Navbar setOpen={setOpen} /> : null}
-      {openUploader ? (
-        <div className="uploadCard">
-          <ProfilePicUploader setOpenUploader={setOpenUploader} />
+      {showFollowersCard ? (
+        <div
+          className="followersCard"
+        >
+          <FollowersContainer followers={followers.followersNames} setShowFollowersCard={setShowFollowersCard} />
         </div>
       ) : null}
     </>
