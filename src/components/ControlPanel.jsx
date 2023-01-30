@@ -48,7 +48,7 @@ function ControlPanel({ username, setOpenPostCard, setOpenSearchCard }) {
         <button className="add" onClick={showUpload}>
           <img src={Add} alt="add" />
         </button>
-        <Link>
+        <Link to="/chat">
           <img src={Message} alt="msg" />
         </Link>
         <Link to={`/profile?username=${username}`} title={username}>

@@ -7,6 +7,8 @@ import Profile from "./pages/Profile";
 import SearchedProfile from "./pages/SearchedProfile";
 import Intro from "./pages/Home/Intro";
 import Reset from "./pages/Reset";
+import Chat from "./pages/Chat/Chat";
+import ChatRoom from "./pages/Chat/ChatRoom";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/results" element={<SearchedProfile />} />
           <Route path="/reset" element={<Reset />} />
+          <Route path="/Chat" element={<Chat />} />
+          <Route path="/Room" element={<ChatRoom />} />
         </Routes>
       </Router>
     </div>

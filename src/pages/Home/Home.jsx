@@ -9,9 +9,8 @@ import Post from "../../components/Post";
 import { auth, db } from "../../../server/firebaseConnection";
 
 function Home() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const username = searchParams.get("username");
   const user = auth.currentUser;
+  const username = user?.displayName;
 
   const navigate = useNavigate();
 
@@ -62,13 +61,13 @@ function Home() {
           setOpenSearchCard={setOpenSearchCard}
         />
         {posts.map(({ postId, post }) => (
-            <Post
-              key={postId}
-              postId={postId}
-              imageURL={post.imageURL}
-              caption={post.caption}
-              username={post.username}
-            />
+          <Post
+            key={postId}
+            postId={postId}
+            imageURL={post.imageURL}
+            caption={post.caption}
+            username={post.username}
+          />
         ))}
       </div>
     </>

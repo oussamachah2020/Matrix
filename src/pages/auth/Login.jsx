@@ -22,7 +22,7 @@ function Login() {
       .then(() => {
         auth.onAuthStateChanged((user) => {
           let username = user?.displayName;
-          navigate(`/Home?username=${username}`);
+          navigate("/Home");
         });
       })
       .catch((err) => {
@@ -59,14 +59,18 @@ function Login() {
           }
         />
         <input type="submit" value="validate" />
-      <Link to="/reset" style={{ position: "relative", top: "-10%" }}>Forget Password?</Link>
+        <Link to="/reset" style={{ position: "relative", top: "-10%" }}>
+          Forget Password?
+        </Link>
       </form>
       <p>
         Already have an account ! <Link to="/register">Sign Up</Link>
       </p>
-        <p>---------------------------------------</p>
+      <p>---------------------------------------</p>
       <div className="google_auth">
-        <button className="google_auth--button" onClick={signInWithGoogle}>Sign In with google</button>
+        <button className="google_auth--button" onClick={signInWithGoogle}>
+          Sign In with google
+        </button>
       </div>
     </div>
   );

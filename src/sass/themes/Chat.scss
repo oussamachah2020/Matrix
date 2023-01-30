@@ -1,0 +1,48 @@
+@import "../variables/variables.scss";
+@import "../base/typography.scss";
+@import "../layout/postsLayout.scss";
+
+.chat {
+  background: $background;
+  width: $maxWidth;
+  height: $maxHeight;
+  color: $defaultColor;
+  position: fixed;
+  overflow: auto;
+  z-index: -1;
+}
+
+#chat_title {
+  padding: 1rem;
+  font-size: 2rem;
+}
+
+.people-container__users {
+  padding: .5rem 1rem;
+}
+
+.people-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.chat-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 1.5rem;
+
+  #statePoint {
+    width: 15px;
+    position: absolute;
+    left: 1;
+  }
+
+  p {
+    font-weight: bold;
+  }
+}
