@@ -16,57 +16,56 @@
     display: flex;
     justify-content: space-between;
     align-items: stretch;
+    flex-direction: column;
     margin: 4rem 1rem;
+  }
 
-    .chat-container__reciever {
-      .recieved_msg {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: row;
-        background: #114f7c;
-        border-radius: 10px;
-        width: 172px;
-        height: auto;
-        line-break: anywhere;
-        padding: 0.5rem 1rem;
+  .recieved_msg {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    background: #114f7c;
+    border-radius: 10px;
+    width: 50%;
+    overflow: auto;
+    height: auto;
+    line-break: anywhere;
+    padding: 0.5rem 1rem;
 
-        #time {
-          font-weight: 600;
-          font-size: 11px;
-          line-height: 16px;
-          position: relative;
-          top: 10px;
-          color: rgba(255, 255, 255, 0.5);
-        }
-      }
+    #time {
+      font-weight: 600;
+      font-size: 11px;
+      line-height: 16px;
+      position: relative;
+      top: 10px;
+      color: rgba(255, 255, 255, 0.5);
     }
 
-    .chat-container__consignee {
+  }
+
+
+  .sent_msg {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    background: #114f7c;
+    border-radius: 10px;
+    position: relative;
+    left: 18rem;
+    width: 200px;
+    height: auto;
+    line-break: anywhere;
+    padding: 0.5rem 0.5rem;
+
+    #time {
+      font-weight: 600;
+      font-size: 11px;
+      line-height: 16px;
       position: relative;
-      top: 5rem;
-
-      .sent_msg {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: row;
-        background: #114f7c;
-        border-radius: 10px;
-        width: 200px;
-        height: auto;
-        line-break: anywhere;
-        padding: 0.5rem 0.5rem;
-
-        #time {
-          font-weight: 600;
-          font-size: 11px;
-          line-height: 16px;
-          position: relative;
-          top: 10px;
-          color: rgba(255, 255, 255, 0.5);
-        }
-      }
+      top: 10px;
+      color: rgba(255, 255, 255, 0.5);
     }
   }
 
@@ -75,6 +74,7 @@
     bottom: 20px;
     left: 0;
     right: 0;
+
     form {
       display: flex;
       justify-content: center;
