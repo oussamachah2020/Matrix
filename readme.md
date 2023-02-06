@@ -44,10 +44,19 @@ access the directory
 ```bash 
 cd Matrix 
 ```
+run this command to install all dipendencies
+```bash
+npm install
+```
 
 and run the following command
 ```bash 
-npm run dev 
+yarn dev
+```
+or
+
+```bash
+npm run dev
 ```
 
 ## 🔗 Links
