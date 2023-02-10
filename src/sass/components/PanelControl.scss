@@ -14,11 +14,12 @@
   align-items: center;
   border-radius: 50px;
   margin: 1rem;
-  // width: 378px;
   height: 47px;
   position: fixed;
-  top: 90%;
+  // top: 90%;
+  bottom: 0;
   width: 95vw;
+  z-index: 99;
 }
 
 .panel-container img {

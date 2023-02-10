@@ -1,10 +1,9 @@
 .posts-container {
   display: grid;
-  justify-content: center;
-  align-items: center;
-  grid-template-columns: repeat(1fr, 100%);
-  margin: 2rem;
-  // gap: 0rem;
+  place-items: center;
+  // grid-template-columns: repeat(1fr, 100%);
+  margin: 1em auto;
+  height: auto;
 }
 
 .post {
@@ -15,8 +14,7 @@
 
   border: 1px solid #ffff;
   border-radius: 10px;
-  width: 95vw;
-  // z-index: 0;
+  width: 50%;
 }
 
 #user {
@@ -38,11 +36,6 @@
   font-size: 0.9rem;
   background-color: rgb(14, 49, 94);
 }
-
-// #username {
-//   position: relative;
-//   right: 10%;
-// }
 
 .post_header {
   display: inline-flex;
@@ -91,4 +84,11 @@
 .commentInput-container img {
   width: 25px;
   cursor: pointer;
+}
+
+
+@media (max-width: 628px) {
+  .post {
+    width: 90%;
+  }
 }

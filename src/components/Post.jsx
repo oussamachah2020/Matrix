@@ -38,20 +38,9 @@ function Post({ username, imageURL, caption, postId }) {
     getProfilePic();
   }, []);
 
-  // const showModal = () => {
-  //   setIsModalOpen(false);
-  // };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
-  // useEffect(() => {
-  //   db.collection("posts").doc(postId).collection("reaction").add({
-  //     counter: counter,
-  //     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-  //     username: username,
-  //   });
-  // }, []);
 
   const postComment = () => {
     db.collection("posts")

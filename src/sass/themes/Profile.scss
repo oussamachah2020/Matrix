@@ -6,11 +6,11 @@
   overflow-x: auto;
   background: $background;
   width: $maxWidth;
-  // height: $maxHeight;
+  height: 100%;
   color: $defaultColor;
-  position: absolute;
   padding-top: 1.5rem;
   gap: 1rem;
+  // padding: 1rem;
 }
 
 .profile_pic {
@@ -61,4 +61,24 @@
 
 .profile {
   z-index: -1;
+}
+
+.user-posts {
+  margin: 1em auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+  flex-direction: column;
+  width: 100%;
+
+  > p {
+    margin-top: 2rem;
+  }
+
+  .post-container {
+    display: grid;
+    place-items: center;
+    width: 100%;
+  }
 }

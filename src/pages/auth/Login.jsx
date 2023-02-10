@@ -21,7 +21,7 @@ function Login() {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         auth.onAuthStateChanged((user) => {
-          let username = user?.displayName;
+          localStorage.setItem("user", JSON.stringify(user));
           navigate("/Home");
         });
       })

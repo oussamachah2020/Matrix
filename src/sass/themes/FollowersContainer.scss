@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
-  gap: 1.5rem;
+  // gap: 1.5rem;
   background: linear-gradient(
     109.66deg,
     #021222 1.32%,
@@ -36,6 +36,7 @@
   width: $maxWidth;
   height: $maxHeight;
   position: absolute;
+  top: 0;
   backdrop-filter: blur(5px);
   z-index: 99;
 }

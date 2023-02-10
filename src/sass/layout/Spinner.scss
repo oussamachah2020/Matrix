@@ -1,0 +1,11 @@
+@import "../variables/variables.scss";
+
+.spinner-container {
+  background: $background;
+  height: $maxHeight;
+  width: $maxWidth;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

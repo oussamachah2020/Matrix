@@ -130,7 +130,10 @@ function SearchedProfile() {
         </div>
         <h2 id="username">{username}</h2>
         <div className="counter-container">
-          <p onClick={() => setShowFollowersCard(true)} style={{ cursor:"pointer" }}>
+          <p
+            onClick={() => setShowFollowersCard(true)}
+            style={{ cursor: "pointer" }}
+          >
             <span id="counter-container--followers">
               {followers.followersNames ? followers.followersNames.length : 0}
             </span>{" "}
@@ -179,10 +182,11 @@ function SearchedProfile() {
       </div>
       {open ? <Navbar setOpen={setOpen} /> : null}
       {showFollowersCard ? (
-        <div
-          className="followersCard"
-        >
-          <FollowersContainer followers={followers.followersNames} setShowFollowersCard={setShowFollowersCard} />
+        <div className="followersCard">
+          <FollowersContainer
+            followers={followers.followersNames}
+            setShowFollowersCard={setShowFollowersCard}
+          />
         </div>
       ) : null}
     </>

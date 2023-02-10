@@ -17,36 +17,39 @@ import Navbar from "../components/Navbar";
 import ProfilePicUploader from "../components/profilePicUploader";
 import Camera from "../assets/camera.png";
 import UserAvatar from "../components/UserAvatar";
+import Spinner from "../components/Spinner";
 
 function profile() {
   const [searchParams, setSearchParams] = useSearchParams();
   const username = searchParams.get("username");
   const [open, setOpen] = useState(false);
   const [openUploader, setOpenUploader] = useState(false);
-  const user = auth.currentUser;
+  // const user = auth.currentUser;
   const [data, setData] = useState([]);
   const [profile, setProfile] = useState("");
+  const [followers, setFollowers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState({})
+
+  auth.onAuthStateChanged((user) => {
+    if(user) {
+      setUser(user)
+    }
+  })
 
   useEffect(() => {
-    // Get the posts collection
     if (user) {
-      // Get the collection
       const unsubscribe = db
         .collection("posts")
-        // Create a query with a filter on the user ID field
-        .where("username", "==", user.displayName)
+        .where("username", "==", username)
         .onSnapshot((snapshot) => {
-          // Get the documents in the snapshot
           const documents = snapshot.docs;
           const posts = [];
           documents.forEach((doc) => {
-            // console.log(doc.data());
             posts.push(doc.data());
             setData(posts);
           });
-          // Set the data state with the documents
         });
-      // Unsubscribe from the snapshot when the component unmounts
       return () => unsubscribe();
     }
   }, []);
@@ -54,19 +57,40 @@ function profile() {
   useEffect(() => {
     const getProfilePic = async () => {
       db.collection("profile_pic")
-        .where("username", "==", user?.displayName)
+        .where("username", "==", username)
         .onSnapshot((snapshot) => {
           snapshot.docs.forEach((doc) => {
             setProfile(doc.data().imageURL);
-            setPicId(doc.id);
           });
         });
     };
 
     getProfilePic();
-  }, []);
+  }, [username]);
 
-  // console.log(picId);
+  useEffect(() => {
+    setLoading(true);
+    if (user != null) {
+      db.collection("followers")
+        .where("username", "==", username)
+        .onSnapshot((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            if (doc) {
+              setFollowers(doc.data().followersNames);
+            }
+          });
+          setLoading(false);
+        });
+    }
+  }, [username]);
+
+  console.log(followers);
+
+  localStorage.setItem("profileImage", profile);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -97,7 +121,8 @@ function profile() {
         <p id="userEmail">{user.email}</p>
         <div className="counter-container">
           <p>
-            <span id="counter-container--followers">0</span> Followers
+            <span id="counter-container--followers">{followers.length}</span>{" "}
+            Followers
           </p>
           <span>.</span>
           <p>
@@ -105,7 +130,7 @@ function profile() {
           </p>
         </div>
         <div className="user-posts">
-          <p style={{ margin: "20px 0" }}>Your Posts</p>
+          <p>Your Posts</p>
           {data.map((item) => (
             <div className="post-container">
               <div className="post">
