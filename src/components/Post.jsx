@@ -15,10 +15,7 @@ function Post({ username, imageURL, caption, postId }) {
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [counter, setCounter] = useState(0);
-  const [liked, setLiked] = useState(false);
   const [reactionData, setReactionData] = useState([]);
-  const [reactionId, setReactionId] = useState("");
 
   const [profile, setProfile] = useState("");
   const loggedInUser = auth.currentUser;

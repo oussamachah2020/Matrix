@@ -22,6 +22,7 @@ function Navbar({ setOpen }) {
       .then((user) => {
         if (!user) {
           navigate("/login");
+          localStorage.clear();
         }
       })
       .catch((err) => toast(err));

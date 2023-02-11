@@ -20,8 +20,6 @@ import UserAvatar from "../components/UserAvatar";
 import Spinner from "../components/Spinner";
 
 function profile() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const username = searchParams.get("username");
   const [open, setOpen] = useState(false);
   const [openUploader, setOpenUploader] = useState(false);
   // const user = auth.currentUser;
@@ -29,14 +27,11 @@ function profile() {
   const [profile, setProfile] = useState("");
   const [followers, setFollowers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({})
 
-  auth.onAuthStateChanged((user) => {
-    if(user) {
-      setUser(user)
-    }
-  })
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [searchParams, setSearchParams] = useSearchParams();
+  const username = searchParams.get("username");
+  
   useEffect(() => {
     if (user) {
       const unsubscribe = db
