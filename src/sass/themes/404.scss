@@ -1,0 +1,19 @@
+@import "../variables/variables.scss";
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1em;
+
+  background: $background;
+  height: $maxHeight;
+  width: 100%;
+  color: #ffff;
+  gap: 1rem;
+
+  p {
+    font-size: 2rem;
+  }
+}

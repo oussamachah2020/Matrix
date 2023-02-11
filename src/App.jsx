@@ -9,6 +9,7 @@ import Intro from "./pages/Home/Intro";
 import Reset from "./pages/Reset";
 import Chat from "./pages/Chat/Chat";
 import ChatRoom from "./pages/Chat/ChatRoom";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/reset" element={<Reset />} />
           <Route path="/Chat" element={<Chat />} />
           <Route path="/Room" element={<ChatRoom />} />
+          <Route path="/404-notFound" element={<NotFound />} />
         </Routes>
       </Router>
     </div>

@@ -28,7 +28,6 @@ function SearchedProfile() {
   const [userPosts, setUserPosts] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [followId, setFollowId] = useState("");
-  const [numberOfFollowers, setNumberOfFollowers] = useState(0);
   const [showFollowersCard, setShowFollowersCard] = useState(false);
 
   useEffect(() => {

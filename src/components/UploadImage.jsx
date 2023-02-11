@@ -9,7 +9,7 @@ import firebase from "firebase/compat/app";
 const UploadImage = ({ setOpenPostCard }) => {
   const [image, setImage] = useState(null);
   const [caption, setCaption] = useState("");
-  const user = auth.currentUser;
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const hideUpload = () => {
     setOpenPostCard(false);
@@ -30,10 +30,12 @@ const UploadImage = ({ setOpenPostCard }) => {
               timestamp: firebase.firestore.FieldValue.serverTimestamp(),
               caption: caption,
               imageURL: url,
-              username: user?.displayName,
+              username: user.displayName,
             });
 
             message.success("Posted successfully");
+            setCaption("");
+            setImage(null);
           })
           .catch((error) => {
             console.log("Error getting download URL:", error);
@@ -46,14 +48,7 @@ const UploadImage = ({ setOpenPostCard }) => {
       });
   };
 
-  // const handleChange = (info) => {
-  //   const { fileList } = info;
-  //   setImage(fileList[0]);
-  // };
-
   console.log(image);
-
-  // console.log(Image);
   return (
     <div className="upload-container">
       <p>Post Something</p>

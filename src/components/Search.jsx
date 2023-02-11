@@ -1,41 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../sass/themes/Search.scss";
 import Arrow from "../assets/arrow.svg";
 import { auth, db } from "../../server/firebaseConnection";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 function Search({ setOpenSearchCard }) {
   const [searchedValue, setSearchedValue] = useState("");
   const [searchedProfile, setSearchedProfile] = useState([]);
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const [found, setFound] = useState(false);
+
+  const navigate = useNavigate();
 
   const closeCard = () => {
     setOpenSearchCard(false);
   };
 
-  const searchForUser = () => {
-    // await db.collection("posts")
-    //   .where("username", "==", searchedValue)
-    //   .get()
-    //   .then((snapshot) => {
-    //     snapshot.docs.map((data) => alert(data.id));
-    //   });
-
-    db.collection("posts")
-      .where("username", "==", searchedValue)
-      .onSnapshot((snapshot) => {
-        snapshot.docs.forEach((doc) => {
-          setSearchedProfile({
-            id: doc.id,
-            profile: doc.data(),
-          });
+  const searchForUser = async () => {
+    setLoading(true);
+    try {
+      const snapshot = await db
+        .collection("posts")
+        .where("username", "==", searchedValue)
+        .get();
+      if (!snapshot.empty) {
+        setLoading(false);
+        const doc = snapshot.docs[0];
+        setSearchedProfile({
+          id: doc.id,
+          profile: doc.data(),
         });
-      });
-
-      navigate(`/results?userName=${searchedProfile.profile.username}&image=${searchedProfile.profile.imageURL}/id=${searchedProfile.id}`)
-
-    console.log(searchedProfile);
+        navigate(
+          `/results?userName=${searchedProfile.profile.username}&image=${searchedProfile.profile.imageURL}/id=${searchedProfile.id}`
+        );
+      } else {
+        setLoading(false);
+        navigate("/404-notFound");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="Search-container">
@@ -58,7 +68,12 @@ function Search({ setOpenSearchCard }) {
             <span>{profile.username}</span>
           </>
         ))}
-      {/* <p>what are you </p> */}
+      {found ? (
+        <>
+          <img src={Robot} alt="404" width={250} />
+          <p>Sorry, content not found!</p>
+        </>
+      ) : null}
       <p id="back" onClick={closeCard}>
         <img src={Arrow} alt="back" style={{ width: "20px" }} /> Back
       </p>

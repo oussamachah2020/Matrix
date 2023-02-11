@@ -96,6 +96,9 @@ hr {
   position: absolute;
   backdrop-filter: blur(5px);
   z-index: 99;
+  position: absolute;
+  top: 0;
+  bottom: 0;
 }
 
 .searchCard {
