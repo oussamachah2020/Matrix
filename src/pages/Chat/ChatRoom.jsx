@@ -8,62 +8,72 @@ import { useState } from "react";
 import { message } from "antd";
 
 function ChatRoom() {
-  const [text, setText] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [Class, setClass] = useState("");
-  const [currentUid, setCurrentUid] = useState("");
+  // const [text, setText] = useState("");
+  // const [messages, setMessages] = useState([]);
+  // const [uid, setUid] = useState("");
 
-  let timestamp = Date.now();
-  let classType;
+  // auth.onAuthStateChanged((user) => {
+  //   setUid(user?.uid);
+  // });
 
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      setCurrentUid(JSON.stringify(user.uid));
-    } else {
-      console.log("no user");
-    }
-  });
+  // const handleMessaging = (event) => {
+  //   event.preventDefault();
 
-  const handleMessaging = (e) => {
-    e.preventDefault();
-    database
-      .ref("Chat")
-      .push({
-        message: text,
-        createdAt: timestamp,
-        uid: currentUid,
-      })
-      .then(() => {
-        message.success("message sent");
-        setText("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  //   database
+  //     .ref("Chat")
+  //     .push({
+  //       message: text,
+  //       uid: uid,
+  //     })
+  //     .then(() => {
+  //       message.success("message sent");
+  //       setText("");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
-  useEffect(() => {
-    let chat = [];
-    database.ref("Chat").on("child_added", (snaphost) => {
-      let data = snaphost.val();
-      let childId = snaphost.key;
-      chat.push(data);
-      setMessages(chat, childId);
-    });
+  // const handleMessaging = (e) => {
+  //   e.preventDefault();
+  //   database
+  //     .ref("Chat")
+  //     .push({
+  //       message: text,
+  //       createdAt: timestamp,
+  //       uid: currentUid,
+  //     })
+  //     .then(() => {
+  //       message.success("message sent");
+  //       setText("");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
-    chat.forEach((c) => {
-      if (c.uid === currentUid) {
-        setClass("sent_msg");
-      } else {
-        setClass("recieved_msg");
-      }
-      console.log(currentUid);
-    });
-  }, []);
+  // useEffect(() => {
+  //   let chat = [];
+  //   database.ref("Chat").on("child_added", (snaphost) => {
+  //     let data = snaphost.val();
+  //     let childId = snaphost.key;
+  //     chat.push(data);
+  //     setMessages(chat, childId);
+  //   });
+
+  //   chat.forEach((c) => {
+  //     if (c.uid === currentUid) {
+  //       setClass("sent_msg");
+  //     } else {
+  //       setClass("recieved_msg");
+  //     }
+  //     console.log(currentUid);
+  //   });
+  // }, []);
 
   return (
     <div className="room">
-      <Link to="/Chat">
+      {/* <Link to="/Chat">
         <img src={Arrow} alt="Back Button" />
       </Link>
       <div className="chat-container">
@@ -96,7 +106,7 @@ function ChatRoom() {
             <img src={Send} alt="send_Button" />
           </button>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 }

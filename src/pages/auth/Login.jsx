@@ -30,6 +30,12 @@ function Login() {
       });
   };
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user) {
+    navigate("/Home");
+  }
+
   return (
     <div className="login">
       <h2 id="title">Login</h2>

@@ -27,7 +27,6 @@ function Post({ username, imageURL, caption, postId }) {
         .onSnapshot((snapshot) => {
           snapshot.docs.forEach((doc) => {
             setProfile(doc.data().imageURL);
-            setPicId(doc.id);
           });
         });
     };
@@ -136,9 +135,9 @@ function Post({ username, imageURL, caption, postId }) {
                 size={35}
                 src={profile}
               />
-            <div style={{position: "relative"}}>
-              <p id="user">{username}</p>
-            </div>
+              <div style={{ position: "relative" }}>
+                <p id="user">{username}</p>
+              </div>
             </div>
             <div style={{ position: "relative" }}>
               <PostOptions postId={postId} postUser={username} />

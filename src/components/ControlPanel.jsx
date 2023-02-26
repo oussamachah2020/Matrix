@@ -4,21 +4,19 @@ import Home from "../assets/home.svg";
 import Add from "../assets/add.svg";
 import Search from "../assets/search.svg";
 import Message from "../assets/message.svg";
-import Sword from "../assets/sword.jpg";
 import { Link } from "react-router-dom";
 import { Avatar } from "antd";
 import { db } from "../../server/firebaseConnection";
 
-
 function ControlPanel({ username, setOpenPostCard, setOpenSearchCard }) {
   const [profile, setProfile] = useState("");
-  
+
   const showUpload = () => {
-    setOpenPostCard(true)
+    setOpenPostCard(true);
   };
 
   const showSearch = () => {
-    setOpenSearchCard(true)
+    setOpenSearchCard(true);
   };
 
   useEffect(() => {
@@ -28,7 +26,6 @@ function ControlPanel({ username, setOpenPostCard, setOpenSearchCard }) {
         .onSnapshot((snapshot) => {
           snapshot.docs.forEach((doc) => {
             setProfile(doc.data().imageURL);
-            setPicId(doc.id);
           });
         });
     };
@@ -39,7 +36,7 @@ function ControlPanel({ username, setOpenPostCard, setOpenSearchCard }) {
   return (
     <div className="Panel">
       <div className="panel-container">
-        <Link to={`/Home?username=${username}`}>
+        <Link to={"/Home"}>
           <img src={Home} alt="home" />
         </Link>
         <button className="search" onClick={showSearch}>
@@ -48,7 +45,7 @@ function ControlPanel({ username, setOpenPostCard, setOpenSearchCard }) {
         <button className="add" onClick={showUpload}>
           <img src={Add} alt="add" />
         </button>
-        <Link to="/chat">
+        <Link to="/Chat">
           <img src={Message} alt="msg" />
         </Link>
         <Link to={`/profile?username=${username}`} title={username}>

@@ -13,7 +13,6 @@ const userAvatar = () => {
         .onSnapshot((snapshot) => {
           snapshot.docs.forEach((doc) => {
             setProfile(doc.data().imageURL);
-            setPicId(doc.id);
           });
         });
     };

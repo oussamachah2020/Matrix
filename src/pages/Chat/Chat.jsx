@@ -1,111 +1,105 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "../../sass/themes/Chat.scss";
-
-import {auth, db} from "../../../server/firebaseConnection";
-import {Avatar} from "antd";
-
-import {Link, useNavigate} from "react-router-dom";
-
-import onlineCircle from "../../assets/userState.png";
-import offlineCircle from "../../assets/offlineCircle.png";
+import { Avatar } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import Arrow from "../../assets/arrow.svg";
+import Spinner from "../../components/Spinner";
+import { auth, db } from "../../../server/firebaseConnection";
 
 function Chat() {
-    const [chatPeople, setChatPeople] = useState([]);
-    const [pics, setPics] = useState([]);
-    const [roomIn, setRoomIn] = useState(false);
-    const [userState, setUserState] = useState("offline");
+  const [chatPeople, setChatPeople] = useState([]);
+  const [pics, setPics] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [user, setUser] = useState({});
 
-    const currentUser = auth.currentUser?.displayName;
-    const navigate = useNavigate();
-    // console.log(user?.displayName);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        if (currentUser) {
-            const getFollowers = async () => {
-                db.collection("followers")
-                    .where("username", "==", currentUser)
-                    .onSnapshot((snapshot) => {
-                        snapshot.docs.forEach((doc) => {
-                            setChatPeople(doc.data().followersNames);
-                        });
-                    });
-            };
+  //check if user is authenticated
+  auth.onAuthStateChanged((user) => {
+    setUsername(user?.displayName);
+    setUser(user);
+  });
 
-            getFollowers();
-            // console.log(chatPeople);
-        }
-    }, [currentUser]);
-
-    useEffect(() => {
-        let images = [];
-        if (chatPeople) {
-            chatPeople.map((person) => {
-                // console.log(person);
-                db.collection("profile_pic")
-                    .where("username", "==", person)
-                    .onSnapshot((snapshot) => {
-                        snapshot.docs.forEach((doc) => {
-                            images.push(doc.data().imageURL);
-                            setPics(images);
-                        });
-                    });
+  //fetch followers names
+  useEffect(() => {
+    setLoading(true);
+    const getFollowers = async () => {
+      if (user) {
+        db.collection("followers")
+          .where("username", "==", username)
+          .onSnapshot((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              setChatPeople(doc.data().followersNames);
             });
-        }
-        // console.log(pics);
-    }, []);
+            setLoading(false);
+          });
+      }
+    };
 
-    useEffect(() => {
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                setUserState("online");
-                console.log(user);
-            } else {
-                setUserState("offline");
-            }
-        });
-    }, []);
+    getFollowers();
+  }, [username]);
 
-    return (
-        <div className="chat">
-            <h1 id="chat_title">
-                {" "}
-                <Link to="/Home">
-                    <img src={Arrow} alt="Back Button"/> Chat
-                </Link>
-            </h1>
-            <div className="people-container">
-                <div className="people-container__users">
-                    <ul className="people-list">
-                        {chatPeople.length > 0 ? (
-                            chatPeople.map((people, index, id) => (
-                                <div className="chat-container">
-                                    <Avatar size={45} src={pics[index]}/>
-                                    {/* <img
-                    src={userState == "offline" ? onlineCircle : offlineCircle}
-                    alt="state"
-                    i
-                    d="statePoint"
-                  /> */}
-                                    <li
-                                        key={id}
-                                        onClick={() => {
-                                            navigate(`/Room?ChatWith=${people}`);
-                                        }}
-                                    >
-                                        {people}
-                                        <p>Sent You a Message</p>
-                                    </li>
-                                </div>
-                            ))
-                        ) : (
-                            <h1>Want to know people?</h1>
-                        )}
-                    </ul>
-                </div>
-            </div>
+  useEffect(() => {
+    setLoading(true);
+    let images = [""];
+
+    const getProfilePics = async () => {
+      chatPeople.forEach((people) => {
+        db.collection("profile_pic")
+          .where("username", "==", people)
+          .onSnapshot((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              images.push(doc.data().imageURL);
+              setPics(images);
+            });
+            setLoading(false);
+          });
+      });
+    };
+
+    getProfilePics();
+  }, [chatPeople]);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  return (
+    <div className="chat">
+      <h1 id="chat_title">
+        {" "}
+        <Link to="/Home">
+          <img src={Arrow} alt="Back Button" /> Chat
+        </Link>
+      </h1>
+      <div className="people-container">
+        <div className="people-container__users">
+          <ul className="people-list">
+            {chatPeople.length > 0 ? (
+              chatPeople.map((people, index) => (
+                <li key={index}>
+                  <div className="chat-container">
+                    <Avatar size={45} src={pics[index]} />
+                    <li
+                      onClick={() => {
+                        navigate(`/Room?ChatWith=${people}`);
+                      }}
+                    >
+                      {people}
+                      <p>Sent You a Message</p>
+                    </li>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <h1>Want to know people?</h1>
+            )}
+          </ul>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default Chat;
